@@ -5,12 +5,11 @@ import ollamaIcon from "../assets/ollama.png"
 import CircularProgress from '@mui/material/CircularProgress';
 
 const Home = () => {
-  const [messages, setMessages] = useState([]); // Array to store chat messages
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [prompt, setPrompt] = useState('');
 
-  // Function to handle input change and set the prompt state
   const handlePrompt = () => {
     const input = document.getElementById("input").value;
     if (input) {
@@ -18,15 +17,14 @@ const Home = () => {
     }
   };
 
-  // Function to fetch chat completion
   const fetchOllama = async () => {
     setLoading(true);
     try {
       const groq = new Groq({ apiKey: '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', dangerouslyAllowBrowser: true });
       const chatCompletion = await groq.chat.completions.create({
         messages: [
-          { role: 'system', content: 'do not answer who you are just say i am an Ai , make answering freindly with nice language, your name is yassir' }, // System message
-          { role: 'user', content: prompt } // User message
+          { role: 'system', content: 'do not answer who you are just say i am an Ai , make answering freindly with nice language, your name is yassir' }, 
+          { role: 'user', content: prompt } 
         ],
         model: 'llama3-8b-8192',
         temperature: 1,
@@ -41,13 +39,13 @@ const Home = () => {
         response += chunk.choices[0]?.delta?.content || '';
       }
 
-      // Update messages array with new prompt and response
+   
       setMessages(prevMessages => [
         ...prevMessages,
         { type: "prompt", text: prompt },
         { type: "response", text: response }
       ]);
-      setPrompt(''); // Clear the input field after submission
+      setPrompt('');
     } catch (error) {
       console.error('Error fetching chat completion:', error);
       setError(error.message);
@@ -56,7 +54,6 @@ const Home = () => {
     }
   };
 
-  // Effect to fetch chat completion when prompt changes
   useEffect(() => {
     if (prompt) {
       fetchOllama();
@@ -70,7 +67,6 @@ const Home = () => {
         {loading &&  <CircularProgress sx={{ color: '#10b981' }} />}
         {error && <p>Error: {error}</p>}
         
-        {/* Render previous messages */}
         <div className='p-4 w-[100vw] h-[80vh] overflow-y-scroll overflow-x-hidden' style={{msOverflowStyle: 'none',  scrollbarWidth: 'none' }}
 >
           {messages.map((message, index) => (
