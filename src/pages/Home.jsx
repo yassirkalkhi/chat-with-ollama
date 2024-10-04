@@ -20,7 +20,9 @@ const Home = () => {
   const fetchOllama = async () => {
     setLoading(true);
     try {
-      const groq = new Groq({ apiKey: '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', dangerouslyAllowBrowser: true });
+      const groq = new Groq({ apiKey: GROQ_API_KEY , 
+                             dangerouslyAllowBrowser: true });
+      
       const chatCompletion = await groq.chat.completions.create({
         messages: [
           { role: 'system', content: 'do not answer who you are just say i am an Ai , make answering freindly with nice language, your name is yassir' }, 
